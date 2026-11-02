@@ -34,17 +34,31 @@ async function getClientId() {
 export default function GoogleButton({ onCredential }) {
   const containerRef = useRef(null);
   const callbackRef = useRef(onCredential);
-  const [status, setStatus] = useState('loading'); // loading | ready | unavailable | error
+  const [status, setStatus] = useState('loading');
   callbackRef.current = onCredential;
 
   useEffect(() => {
     let cancelled = false;
     (async () => {
+      let clientId;
       try {
-        const clientId = await getClientId();
-        if (!clientId) { if (!cancelled) setStatus('unavailable'); return; }
+        clientId = await getClientId();
+      } catch {
+        if (!cancelled) setStatus('config-error');
+        return;
+      }
+
+      if (!clientId) { if (!cancelled) setStatus('unavailable'); return; }
+
+      try {
         await loadGoogleScript();
-        if (cancelled || !containerRef.current) return;
+      } catch {
+        if (!cancelled) setStatus('script-error');
+        return;
+      }
+
+      if (cancelled || !containerRef.current) return;
+      try {
         window.google.accounts.id.initialize({
           client_id: clientId,
           callback: response => callbackRef.current(response.credential),
@@ -57,7 +71,7 @@ export default function GoogleButton({ onCredential }) {
         });
         setStatus('ready');
       } catch {
-        if (!cancelled) setStatus('error');
+        if (!cancelled) setStatus('setup-error');
       }
     })();
     return () => { cancelled = true; };
@@ -72,7 +86,9 @@ export default function GoogleButton({ onCredential }) {
         </div>
       )}
       {status === 'unavailable' && <p className="text-xs text-white/35 text-center">Google sign-in is not set up yet — use email below.</p>}
-      {status === 'error' && <p className="text-xs text-amber-400/80 text-center">Google sign-in couldn&apos;t load (blocked or offline). Use email below.</p>}
+      {status === 'config-error' && <p className="text-xs text-amber-400/80 text-center">Couldn&apos;t reach the sign-in configuration. Check that the backend is running and NEXT_PUBLIC_API_URL points to it. Use email below.</p>}
+      {status === 'script-error' && <p className="text-xs text-amber-400/80 text-center">Google sign-in couldn&apos;t load. Check your connection or allow accounts.google.com in your browser or network settings. Use email below.</p>}
+      {status === 'setup-error' && <p className="text-xs text-amber-400/80 text-center">Google sign-in couldn&apos;t initialize. Check the Google client ID and authorized JavaScript origins. Use email below.</p>}
     </div>
   );
 }

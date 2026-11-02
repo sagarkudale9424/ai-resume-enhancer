@@ -40,7 +40,7 @@ Full-stack AI app built with Next.js, Express.js, MongoDB and Groq.
 
 ```bash
 npm run install:all
-npm run setup          # copies the .env example files
+npm run setup          # creates missing .env files without overwriting existing ones
 # then edit backend/.env with your GROQ_API_KEY, MONGODB_URI and JWT_SECRET
 ```
 
@@ -50,6 +50,8 @@ npm run setup          # copies the .env example files
 2. **Create credentials → OAuth client ID → Web application** (set up the OAuth consent screen first if asked).
 3. Under **Authorized JavaScript origins** add every URL the frontend runs on, e.g. `http://localhost:3000` and your Vercel URL.
 4. Copy the client ID into `GOOGLE_CLIENT_ID` in `backend/.env` (and in your backend host's environment). The frontend fetches it from the backend automatically.
+
+If Google sign-in cannot load, check the message below the button: a configuration message means the backend or its API URL is unavailable; a loading message means the browser or network cannot reach Google's sign-in script; and an initialization message usually means the client ID or authorized origins need correction. Email sign-in remains available.
 
 ### 4. Run
 
