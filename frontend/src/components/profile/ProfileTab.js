@@ -238,10 +238,10 @@ export default function ProfileTab({ onOpenTab, resumeContext = '' }) {
 
       {/* Form */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Field icon={User} label="Full Name" value={profile.name} onChange={e => set('name', e.target.value)} placeholder="Sahil Shaikh" />
+        <Field icon={User} label="Full Name" value={profile.name} onChange={e => set('name', e.target.value)} placeholder="Sagar Kudale" />
         <Field icon={Briefcase} label="Headline" value={profile.headline} onChange={e => set('headline', e.target.value)} placeholder="Full-Stack Developer | React & Node.js" />
         <Field icon={Target} label="Target Role" value={profile.targetRole} onChange={e => set('targetRole', e.target.value)} placeholder="Software Engineer" />
-        <Field icon={Phone} label="Phone" value={profile.phone} onChange={e => set('phone', e.target.value)} placeholder="+91 98765 43210" />
+        <Field icon={Phone} label="Phone" value={profile.phone} onChange={e => set('phone', e.target.value)} placeholder="+91 75584 78359" />
         <Field icon={MapPin} label="Location" value={profile.location} onChange={e => set('location', e.target.value)} placeholder="Mumbai, India" />
         <Field icon={Linkedin} label="LinkedIn" value={profile.linkedin} onChange={e => set('linkedin', e.target.value)} placeholder="linkedin.com/in/username" />
         <Field icon={Github} label="GitHub" value={profile.github} onChange={e => set('github', e.target.value)} placeholder="github.com/username" />
